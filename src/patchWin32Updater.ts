@@ -58,8 +58,13 @@ function patchLatest() {
         if (latestVersion === currentVersion) return;
 
         const resources = join(discordPath, latestVersion, "resources");
-        const app = join(resources, "app.asar");
-        const _app = join(resources, "_app.asar");
+        // ! Incompatible with uwu/Acrylic
+        // // const app = join(resources, "app.asar");
+        // // const _app = join(resources, "_app.asar");
+
+        // ? Acrylic compatability
+        const app = join(resources, "original.asar");
+        const _app = join(resources, "original.asar");
 
         if (!existsSync(app) || statSync(app).isDirectory()) return;
 
