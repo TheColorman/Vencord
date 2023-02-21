@@ -1,6 +1,9 @@
-# Vencord
+# Vencord - Colorman fork
 
-The cutest Discord client mod
+The cutest Discord client mod.  
+This fork is purely for my personal use, with two main changes:  
+1. Compatability with uwu/Acrylic (Not quite there yet, still need to manually patch after every update. Also, don't use this as a reference for actual compatability, this is modifying Vencord to work with Acrylic, when it really should be the other way around.)  
+2. Early access to plugins still waiting to get merged.  
 
 ## Features
 
