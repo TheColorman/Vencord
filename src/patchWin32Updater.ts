@@ -17,7 +17,7 @@
 */
 
 import { app, autoUpdater } from "electron";
-import { existsSync, mkdirSync, readdirSync, renameSync, statSync, writeFileSync } from "fs";
+import { appendFileSync, copyFileSync, existsSync, mkdirSync, readdirSync, renameSync, statSync, writeFileSync } from "fs";
 import { basename, dirname, join } from "path";
 
 const { setAppUserModelId } = app;
@@ -72,11 +72,32 @@ function patchLatest() {
 
         renameSync(app, _app);
         mkdirSync(app);
+
+        // Clone Acrylic files
+        function cloneAcrylic(relDir: string) {
+            const dir = join(__dirname, "..", "mods", "Acrylic", "app", relDir);
+            const files = readdirSync(dir);
+            for (const file of files) {
+                const relPath = join(relDir, file);
+                // Check if path is a directory
+                if (statSync(relPath).isDirectory()) {
+                    cloneAcrylic(relPath);
+                    continue;
+                }
+                // Copy file
+                copyFileSync(join(dir, file), join(app, relPath));
+            }
+        }
+        cloneAcrylic(".");
+
+        // package.json
         writeFileSync(join(app, "package.json"), JSON.stringify({
             name: "discord",
             main: "index.js"
         }));
-        writeFileSync(join(app, "index.js"), `require(${JSON.stringify(join(__dirname, "patcher.js"))});`);
+
+        // Add Vencord patcher to Acrylic index
+        appendFileSync(join(app, "index.js"), `require(${JSON.stringify(join(__dirname, "patcher.js"))});`);
     } catch (err) {
         console.error("[Vencord] Failed to repatch latest host update", err);
     }
