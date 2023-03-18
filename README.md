@@ -75,7 +75,9 @@ In there you should see a file ending in `.asar`. Make a copy of that, and renam
 Then create an `app/` folder if there isn't one already.  
 Now copy everything from the `Acrylic/` folder in this repo into the `app.asar/` and `app/` folders (yes, both). Click Yes when it asks if you want to replace files.
 
-Finally, you need to open up the `dist/patcher.js` file. Then replace all the places where it mentions an asar file with `original.asar`. For example, it might say "`_app.asar`", or "`app.asar`". Replace that with "`original.asar`".
+(I'm not actually sure if this step is necessary, try and see if it works without it)  
+Finally, you need to open up the `dist/patcher.js` file. Then replace all the places where it mentions an asar file with `original.asar`. For example, it might say "`_app.asar`", or "`app.asar`". Replace that with "`original.asar`".  
+(If thinks don't work later, try also doing the same for the `dist/patcher.js.map`.)
 
 # Updating Vencord
 
