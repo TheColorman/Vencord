@@ -1,51 +1,91 @@
-# Vencord - Colorman fork
+# Vencord x Acrylic - Colorman fork
 
-The cutest Discord client mod.  
-This fork is purely for my personal use, with two main changes:  
-1. Compatability with uwu/Acrylic (Not quite there yet, still need to manually patch after every update. Also, don't use this as a reference for actual compatability, this is modifying Vencord to work with Acrylic, when it really should be the other way around.)  
-2. Early access to plugins still waiting to get merged.  
+Super scuffed fork of Vencord that allows Acrylic to be installed alongside it. (Also compatible with OpenAsar).  
+It only works for Windows, and not even sure about Windows 11.  
+I also add plugins that haven't been merged on the main Vencord repo.
 
-## Features
+Vencord source: https://github.com/Vendicated/Vencord  
+Acrylic source: https://github.com/uwu/Acrylic
 
--   Super easy to install (Download Installer, open, click install button, done)
--   100+ plugins built in: [See a list](https://gist.github.com/Vendicated/8696cde7b92548064a3ae92ead84d033)
-    -   Some highlights: SpotifyControls, Experiments, NoTrack, MessageLogger, QuickReply, Free Emotes/Stickers, CustomCommands, ShowHiddenChannels, PronounDB
--   Fairly lightweight despite the many inbuilt plugins
--   Excellent Browser Support: Run Vencord in your Browser via extension or UserScript
--   Works on any Discord branch: Stable, Canary or PTB all work (though for the best experience I recommend stable!)
--   Custom CSS and Themes: Inbuilt css editor with support to import any css files (including BetterDiscord themes)
--   Privacy friendly, blocks Discord analytics & crash reporting out of the box and has no telemetry
--   Maintained very actively, broken plugins are usually fixed within 12 hours
+Note that I've changed some of the CSS in `Acrylic/theme.css` to make it less transparent. My CSS starts is everything from `/* Custom */` to `/* End of custom */`, so feel free to play around with it to get it to your liking.
 
-## Installing / Uninstalling
+# Installation (Vencord)
 
-[![Download and run the Installer ](https://img.shields.io/github/v/release/Vencord/Installer?label=Download%20Vencord%20Installer&style=for-the-badge)](https://github.com/Vencord/Installer#usage)
+The Vencord part of this is just copied from https://github.com/Vendicated/Vencord/blob/main/docs/1_INSTALLING.md.
 
-## Installing on Browser
+## Dependencies
 
-[![Get it on the Firefox Webstore](https://blog.mozilla.org/addons/files/2015/11/get-the-addon.png)](https://addons.mozilla.org/en-GB/firefox/addon/vencord-web/) [![Get it on the Chrome Webstore](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/UV4C4ybeBTsZt43U4xis.png)](https://chrome.google.com/webstore/detail/vencord-web/cbghhgpcnddeihccjmnadmkaejncjndb)
+-   Install Git from https://git-scm.com/download
+-   Install Node.JS LTS from here: https://nodejs.dev/en/
 
-Or use the [UserScript](https://raw.githubusercontent.com/Vencord/builds/main/Vencord.user.js) - Please note that the CSS Editor, Themes loaded from remote sources and co. will not work in the UserScript. Use the extension if you need any of those
+## Installing Vencord
 
-## Building from Source
+> ❗ If this doesn't work, see [Manually Installing Vencord](#manually-installing-vencord)
 
-See the docs folder
+Install `pnpm`:
 
-## Contributing
+> ❗ This next command may need to be run as admin/sudo depending on your system, and you may need to close and reopen your terminal for pnpm to be in your PATH.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [Megu's Plugin Guide!](docs/2_PLUGINS.md)
+```shell
+npm i -g pnpm
+```
 
-[contribute]: CONTRIBUTING.md
+> ❗ **IMPORTANT** Make sure you aren't using an admin/root terminal from here onwards. It **will** mess up your Discord/Vencord instance and you **will** most likely have to reinstall.
 
-[contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute] [contribute]
+Clone TheColorman/Vencord:
 
-## Join
+```shell
+git clone https://github.com/TheColorman/Vencord
+cd Vencord
+```
 
-[join]: https://discord.gg/D9uwnFnqmd
+Install dependencies:
 
-[join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join] [join]
+```shell
+pnpm install --frozen-lockfile
+```
 
-## Disclaimer
+Build Vencord:
 
-Discord is trademark of Discord Inc. and solely mentioned for the sake of descriptivity.
-Mention of it does not imply any affiliation with or endorsement by Discord Inc.
+```shell
+pnpm build
+```
+
+Inject vencord into your client:
+
+```shell
+pnpm inject
+```
+
+Then fully close Discord from your taskbar or task manager, and restart it. Vencord should be injected - you can check this by looking for the Vencord section in Discord settings.
+
+# Installation (Acrylic)
+
+Okay, from here on it's time to get Acrylic to work.  
+First, you want to change the path on the final line of the `Acrylic/main.js` file:
+
+```js
+//! Replace this with the path to your Vencord folder.
+require("W:\\Projects\\Vencord\\dist\\patcher.js");
+```
+
+Just replace the "`W:\\Projects\\Vencord`" part with wherever you cloned this repository.  
+Now navigate to `C:\Users\[username]\AppData\Local\Discord\app-[newest version]\resources` (or wherever you've installed Discord). Replace `Discord` with `DiscordPTB` or `DiscordCanary` as needed.  
+In there you should see a file ending in `.asar`. Make a copy of that, and rename it to `original.asar`.  
+Then create an `app/` folder if there isn't one already.  
+Now copy everything from the `Acrylic/` folder in this repo into the `app.asar/` and `app/` folders (yes, both). Click Yes when it asks if you want to replace files.
+
+Finally, you need to open up the `dist/patcher.js` file. Then replace all the places where it mentions an asar file with `original.asar`. For example, it might say "`_app.asar`", or "`app.asar`". Replace that with "`original.asar`".
+
+# Updating Vencord
+
+Start by pulling the latest changes to the repo:
+
+```shell
+git pull
+```
+
+If it fails you probably have some changes, just stash them and reapply them after pulling.
+
+Once you've pulled, run the steps from [Installing Vencord](#installing-vencord) again. If it fails to inject, remove the app.asar folder in the Discord `resources` directory (see [Installation (Acrylic)](#installation-acrylic)).  
+Once it has patched successfully, you need to redo the steps in [Installation (Acrylic)](#installation-acrylic).
