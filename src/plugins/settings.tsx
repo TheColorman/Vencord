@@ -107,6 +107,13 @@ export default definePlugin({
             });
 
         cats.push({
+            section: "VencordCloud",
+            label: "Cloud",
+            element: () => <SettingsComponent tab="VencordCloud" />,
+            onClick: makeOnClick("VencordCloud")
+        });
+
+        cats.push({
             section: "VencordSettingsSync",
             label: "Backup & Restore",
             element: () => <SettingsComponent tab="VencordSettingsSync" />,
@@ -168,6 +175,7 @@ export default definePlugin({
     get additionalInfo() {
         if (IS_DEV) return " (Dev)";
         if (IS_WEB) return " (Web)";
+        if (IS_VENCORD_DESKTOP) return " (Vencord Desktop)";
         if (IS_STANDALONE) return " (Standalone)";
         return "";
     },

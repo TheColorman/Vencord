@@ -30,16 +30,43 @@ import "./webpack/patchWebpack";
 import { showNotification } from "./api/Notifications";
 import { PlainSettings, Settings } from "./api/settings";
 import { patches, PMLogger, startAllPlugins } from "./plugins";
+import { localStorage } from "./utils/localStorage";
+import { getCloudSettings, putCloudSettings } from "./utils/settingsSync";
 import { checkForUpdates, rebuild, update, UpdateLogger } from "./utils/updater";
 import { onceReady } from "./webpack";
 import { SettingsRouter } from "./webpack/common";
 
 export let Components: any;
 
+async function syncSettings() {
+    if (
+        Settings.cloud.settingsSync && // if it's enabled
+        Settings.cloud.authenticated // if cloud integrations are enabled
+    ) {
+        if (localStorage.Vencord_settingsDirty) {
+            await putCloudSettings();
+            delete localStorage.Vencord_settingsDirty;
+        } else if (await getCloudSettings(false)) { // if we synchronized something (false means no sync)
+            // we show a notification here instead of allowing getCloudSettings() to show one to declutter the amount of
+            // potential notifications that might occur. getCloudSettings() will always send a notification regardless if
+            // there was an error to notify the user, but besides that we only want to show one notification instead of all
+            // of the possible ones it has (such as when your settings are newer).
+            showNotification({
+                title: "Cloud Settings",
+                body: "Your settings have been updated! Click here to restart to fully apply changes!",
+                color: "var(--green-360)",
+                onClick: () => window.DiscordNative.app.relaunch()
+            });
+        }
+    }
+}
+
 async function init() {
     await onceReady;
     startAllPlugins();
     Components = await import("./components");
+
+    syncSettings();
 
     if (!IS_WEB) {
         try {
@@ -56,8 +83,12 @@ async function init() {
                         permanent: true,
                         noPersist: true,
                         onClick() {
-                            if (needsFullRestart)
-                                window.DiscordNative.app.relaunch();
+                            if (needsFullRestart) {
+                                if (IS_DISCORD_DESKTOP)
+                                    window.DiscordNative.app.relaunch();
+                                else
+                                    window.VencordDesktop.app.relaunch();
+                            }
                             else
                                 location.reload();
                         }
@@ -96,7 +127,7 @@ async function init() {
 
 init();
 
-if (!IS_WEB && Settings.winNativeTitleBar && navigator.platform.toLowerCase().startsWith("win")) {
+if (IS_DISCORD_DESKTOP && Settings.winNativeTitleBar && navigator.platform.toLowerCase().startsWith("win")) {
     document.addEventListener("DOMContentLoaded", () => {
         document.head.append(Object.assign(document.createElement("style"), {
             id: "vencord-native-titlebar-style",
