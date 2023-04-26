@@ -77,7 +77,7 @@ Now copy everything from the `Acrylic/` folder in this repo into the `app.asar/`
 
 (I'm not actually sure if this step is necessary, try and see if it works without it)  
 Finally, you need to open up the `dist/patcher.js` file. Then replace all the places where it mentions an asar file with `original.asar`. For example, it might say "`_app.asar`", or "`app.asar`". Replace that with "`original.asar`".  
-(If thinks don't work later, try also doing the same for the `dist/patcher.js.map`.)
+(If things don't work later, try also doing the same for the `dist/patcher.js.map`.)
 
 # Updating Vencord
 
@@ -90,4 +90,11 @@ git pull
 If it fails you probably have some changes, just stash them and reapply them after pulling.
 
 Once you've pulled, run the steps from [Installing Vencord](#installing-vencord) again. If it fails to inject, remove the app.asar folder in the Discord `resources` directory (see [Installation (Acrylic)](#installation-acrylic)).  
-Once it has patched successfully, you need to redo the steps in [Installation (Acrylic)](#installation-acrylic).
+Once it has patched successfully, you need to redo the steps in [Installation (Acrylic)](#installation-acrylic).  
+  
+# Troubleshooting  
+This is a very unstable patch, so a lot of fuckery might be needed for it to play nice.  
+  
+## Vencord is working, but acrylic isn't  
+Check your `Discord\app-[version]\modules\` folder for any duplicates. Specifically, see if there are two folders that start with `discord_desktop_core`. Rename all of them to something else, *EXCEPT* the one with the biggest number at the end.  
+E.g. if you have `discord_desktop_core-20` and `discord_desktop_core-30`, rename the one ending in `-20` to something else. I changed it to `backup.discord_desktop_core-20`.
