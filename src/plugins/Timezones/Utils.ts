@@ -16,32 +16,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-const PreloadedUserSettings = findLazy(m => m.ProtoClass?.typeName === "discord_protos.discord_users.v1.PreloadedUserSettings");
 
 import * as DataStore from "@api/DataStore";
 import { VENCORD_USER_AGENT } from "@utils/constants";
 import { debounce } from "@utils/debounce";
 import { findLazy } from "@webpack";
 export const DATASTORE_KEY = "plugins.Timezones.savedTimezones";
-import type { timezones } from "./all_timezones";
-
+import { CustomTimezonePreference } from "./settings";
 
 export interface TimezoneDB {
-    [userId: string]: typeof timezones[number];
+    [userId: string]: string;
 }
 
 export const API_URL = "https://timezonedb.catvibers.me";
-const Cache: Record<string, typeof timezones[number]> = {};
+const Cache: Record<string, string> = {};
 
+const PreloadedUserSettings = findLazy(m => m.ProtoClass?.typeName === "discord_protos.discord_users.v1.PreloadedUserSettings");
 export function getTimeString(timezone: string, timestamp = new Date()): string {
-    const locale = PreloadedUserSettings.getCurrentValue().localization.locale.value;
-
-    return new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "numeric", timeZone: timezone }).format(timestamp); // we hate javascript
+    try {
+        const locale = PreloadedUserSettings.getCurrentValue().localization.locale.value;
+        return new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "numeric", timeZone: timezone }).format(timestamp); // we hate javascript
+    } catch (e) {
+        return "Error"; // incase it gets invalid timezone from api, probably not gonna happen but if it does this will prevent discord from crashing
+    }
 }
 
 
 // A map of ids and callbacks that should be triggered on fetch
-const requestQueue: Record<string, ((timezone: typeof timezones[number]) => void)[]> = {};
+const requestQueue: Record<string, ((timezone: string) => void)[]> = {};
 
 
 async function bulkFetchTimezones(ids: string[]): Promise<TimezoneDB | undefined> {
@@ -58,7 +60,7 @@ async function bulkFetchTimezones(ids: string[]): Promise<TimezoneDB | undefined
         return await req.json()
             .then((res: { [userId: string]: { timezoneId: string; } | null; }) => {
                 const tzs = (Object.keys(res).map(userId => {
-                    return res[userId] && { [userId]: res[userId]!.timezoneId as typeof timezones[number] };
+                    return res[userId] && { [userId]: res[userId]!.timezoneId };
                 }).filter(Boolean) as TimezoneDB[]).reduce((acc, cur) => ({ ...acc, ...cur }), {});
 
                 Object.assign(Cache, tzs);
@@ -87,11 +89,20 @@ const bulkFetch = debounce(async () => {
     }
 });
 
-export function getUserTimezone(discordID: string): Promise<typeof timezones[number] | undefined> {
+export function getUserTimezone(discordID: string, strategy: CustomTimezonePreference):
+    Promise<string | undefined> {
+
     return new Promise(res => {
         const timezone = (DataStore.get(DATASTORE_KEY) as Promise<TimezoneDB | undefined>).then(tzs => tzs?.[discordID]);
         timezone.then(tz => {
-            if (tz) res(tz);
+            if (strategy === CustomTimezonePreference.Always) {
+                if (tz) res(tz);
+                else res(undefined);
+                return;
+            }
+
+            if (tz && strategy === CustomTimezonePreference.Secondary)
+                res(tz);
             else {
                 if (discordID in Cache) res(Cache[discordID]);
                 else if (discordID in requestQueue) requestQueue[discordID].push(res);
@@ -104,3 +115,18 @@ export function getUserTimezone(discordID: string): Promise<typeof timezones[num
         });
     });
 }
+
+const gist = "e321f856f98676505efb90aad82feff1";
+const revision = "91034ee32eff93a7cb62d10702f6b1d01e0309e6";
+const timezonesLink = `https://gist.githubusercontent.com/ArjixWasTaken/${gist}/raw/${revision}/timezones.json`;
+
+export const getAllTimezones = async (): Promise<string[]> => {
+    if (typeof Intl !== "undefined" && "supportedValuesOf" in Intl) {
+        try {
+            // @ts-expect-error fuck you typescript
+            return Intl.supportedValuesOf("timeZone");
+        } catch { }
+    }
+
+    return await fetch(timezonesLink).then(tzs => tzs.json());
+};
