@@ -10,7 +10,6 @@ Acrylic source: https://github.com/uwu/Acrylic
 Note that I've changed some of the CSS in `Acrylic/theme.css` to make it less transparent. My CSS starts is everything from `/* Custom */` to `/* End of custom */`, so feel free to play around with it to get it to your liking.
 
 # Installation (Vencord)
-
 The Vencord part of this is just copied from https://github.com/Vendicated/Vencord/blob/main/docs/1_INSTALLING.md.
 
 ## Dependencies
