@@ -297,6 +297,12 @@ body,
 .card-2ART2V:before {
     background: var(--background-secondary) !important;
 }
+/* Non-nitro profile background */
+.userProfileInnerThemedNonPremium-2AJg-H {
+    --profile-bg: #383841f8 !important;
+    --profile-bg-transparent: #38384136 !important;
+    background: linear-gradient(var(--profile-bg),var(--profile-bg) 60px,var(--profile-bg-transparent));
+}
 /* End of custom */
 
 .theme-light
