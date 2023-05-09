@@ -19,7 +19,9 @@
 
 import * as DataStore from "@api/DataStore";
 import { Devs, VENCORD_USER_AGENT } from "@utils/constants";
-import { classes, makeLazy, useForceUpdater } from "@utils/misc";
+import { makeLazy } from "@utils/lazy";
+import { classes } from "@utils/misc";
+import { useForceUpdater } from "@utils/react";
 import definePlugin from "@utils/types";
 import { findByCodeLazy, findByPropsLazy } from "@webpack";
 import { React, SearchableSelect, Text, Toasts, UserStore } from "@webpack/common";
