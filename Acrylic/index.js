@@ -34,7 +34,8 @@ if (process.platform != "darwin") {
     const modulesPath = path.join(basePath, "..", "modules");
     const corePath = fs
         .readdirSync(modulesPath)
-        .find((folder) => folder.includes("discord_desktop_core-"));
+        .filter((folder) => folder.includes("discord_desktop_core-"))
+        .at(-1);
     const acrylicPath = path.join(modulesPath, corePath, "discord_acrylic");
 
     if (fs.existsSync(acrylicPath)) {
@@ -117,37 +118,37 @@ for (const propertyName of propertyNames) {
         get: () =>
             propertyName === "BrowserWindow"
                 ? class extends BrowserWindow {
-                    constructor(opts) {
-                        if (opts.resizable && process.platform == "win32") {
-                            if (vibe.platform.isWin11()) {
-                                opts.frame = true;
-                            }
-                        }
+                      constructor(opts) {
+                          if (opts.resizable && process.platform == "win32") {
+                              if (vibe.platform.isWin11()) {
+                                  opts.frame = true;
+                              }
+                          }
 
-                        opts.webPreferences.devTools = true;
+                          opts.webPreferences.devTools = true;
 
-                        const window = new BrowserWindow(opts);
+                          const window = new BrowserWindow(opts);
 
-                        if (window.resizable && !mainWindow) {
-                            console.log("[Acrylic] Found Discord window.");
+                          if (window.resizable && !mainWindow) {
+                              console.log("[Acrylic] Found Discord window.");
 
-                            mainWindow = window;
+                              mainWindow = window;
 
-                            window.webContents.on("dom-ready", () => {
-                                if (process.platform == "win32") {
-                                    window.setBackgroundColor("#00000000");
-                                    vibe.forceTheme(window, "dark");
-                                }
+                              window.webContents.on("dom-ready", () => {
+                                  if (process.platform == "win32") {
+                                      window.setBackgroundColor("#00000000");
+                                      vibe.forceTheme(window, "dark");
+                                  }
 
-                                window.webContents.executeJavaScript(
-                                    `DiscordNative.nativeModules.requireModule("discord_acrylic");`
-                                );
-                            });
-                        }
+                                  window.webContents.executeJavaScript(
+                                      `DiscordNative.nativeModules.requireModule("discord_acrylic");`
+                                  );
+                              });
+                          }
 
-                        return window;
-                    }
-                }
+                          return window;
+                      }
+                  }
                 : electron[propertyName],
     });
 }
@@ -207,8 +208,12 @@ electron.ipcMain.on("open-css", () => {
             vibe.forceTheme(cssEditor, "dark");
         }
 
-        cssEditor.setIcon(path.join(basePath, "app", "css_editor", "favicon.png"));
-        cssEditor.loadFile(path.join(basePath, "app", "css_editor", "index.html"));
+        cssEditor.setIcon(
+            path.join(basePath, "app", "css_editor", "favicon.png")
+        );
+        cssEditor.loadFile(
+            path.join(basePath, "app", "css_editor", "index.html")
+        );
         cssEditor.on("closed", () => {
             cssEditor = null;
         });
