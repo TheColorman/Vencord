@@ -263,4 +263,4 @@ electron.ipcMain.on("disable", () => {
 });
 
 //! Replace this with the path to your Vencord folder.
-require("W:\\Projects\\Vencord\\dist\\patcher.js");
+require("D:\\Dev\\discord-stuff\\vencord-colorman\\dist\\patcher.js");
