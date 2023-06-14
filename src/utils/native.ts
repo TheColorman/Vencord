@@ -17,10 +17,12 @@
 */
 
 export function relaunch() {
-    if (IS_DISCORD_DESKTOP)
+    if (IS_DISCORD_DESKTOP) {
         window.DiscordNative.app.relaunch();
-    else
+        window.DiscordNative.nativeModules.requireModule("discord_acrylic");
+    } else {
         window.VencordDesktopNative.app.relaunch();
+    }
 }
 
 export function showItemInFolder(path: string) {

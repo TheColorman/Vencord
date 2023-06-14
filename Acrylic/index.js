@@ -246,7 +246,7 @@ electron.ipcMain.on("css-reload", () => {
     injectCss(mainWindow, loadCss());
 });
 
-const types = ["mica", "acrylic", "blurbehind"];
+const types = ["mica", "acrylic", "blurbehind", "unified-acrylic"];
 
 electron.ipcMain.on("enable", (_, type) => {
     console.log("[Acrylic] Enabling Acrylic.");
