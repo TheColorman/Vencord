@@ -246,7 +246,7 @@ electron.ipcMain.on("css-reload", () => {
     injectCss(mainWindow, loadCss());
 });
 
-const types = ["mica", "acrylic", "blurbehind"];
+const types = ["mica", "acrylic", "blurbehind", "unified-acrylic"];
 
 electron.ipcMain.on("enable", (_, type) => {
     console.log("[Acrylic] Enabling Acrylic.");
@@ -263,4 +263,4 @@ electron.ipcMain.on("disable", () => {
 });
 
 //! Replace this with the path to your Vencord folder.
-require("W:\\Projects\\Vencord\\dist\\patcher.js");
+require("D:\\Dev\\discord-stuff\\vencord-colorman\\dist\\patcher.js");
